@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Legal Metrology Compliance Rule",
+  "description": "Schema for defining compliance rules under Legal Metrology (Packaged Commodities) Rules, 2011",
+  "type": "object",
+  "required": ["rule_id", "title", "category", "field_name", "rule_type", "condition", "severity", "legal_reference", "violation_message", "recommendation"],
+  "properties": {
+    "rule_id": {
+      "type": "string",
+      "pattern": "^[A-Z]+-[0-9]{3}$",
+      "description": "Unique rule identifier (e.g., LMPC-001)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable rule title"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["Mandatory Declaration", "Format Validation", "Date Validation", "Numeric Validation", "Conditional Requirement", "Product Specific", "Font/Readability", "Placement", "Regulatory", "Custom"],
+      "description": "Rule category"
+    },
+    "subcategory": {
+      "type": "string",
+      "description": "Optional subcategory for further classification"
+    },
+    "field_name": {
+      "type": "string",
+      "description": "The product data field this rule validates"
+    },
+    "rule_type": {
+      "type": "string",
+      "enum": ["REQUIRED_FIELD", "REGEX", "NUMERIC_RANGE", "DATE_FORMAT", "DATE_RELATIONSHIP", "TEXT_PATTERN", "CONDITIONAL_REQUIRED", "QUANTITY_FORMAT", "PRICE_FORMAT", "FONT_SIZE", "READABILITY", "POSITION", "DUPLICATE_DECLARATION", "CUSTOM_VALIDATOR"],
+      "description": "Type of validation to perform"
+    },
+    "condition": {
+      "type": "object",
+      "description": "Type-specific validation condition",
+      "properties": {
+        "required": { "type": "boolean" },
+        "pattern": { "type": "string" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "format": { "type": "string" },
+        "date_field_1": { "type": "string" },
+        "date_field_2": { "type": "string" },
+        "relationship": { "type": "string", "enum": ["before", "after", "same_or_after"] },
+        "contains": { "type": "string" },
+        "depends_on_field": { "type": "string" },
+        "depends_on_value": {},
+        "valid_units": { "type": "array", "items": { "type": "string" } },
+        "min_height_ratio": { "type": "number" },
+        "custom_validator_name": { "type": "string" },
+        "custom_params": { "type": "object" }
+      }
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+      "description": "Violation severity"
+    },
+    "legal_reference": {
+      "type": "string",
+      "description": "Legal reference (Act/Rule/Section)"
+    },
+    "violation_message": {
+      "type": "string",
+      "description": "Message displayed when rule is violated"
+    },
+    "recommendation": {
+      "type": "string",
+      "description": "Recommended corrective action"
+    },
+    "applicability": {
+      "type": "object",
+      "description": "Conditions under which this rule applies",
+      "properties": {
+        "product_types": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Product types this rule applies to. Use ['all'] for universal rules."
+        },
+        "product_categories": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Product categories this rule applies to"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": { "type": "string" },
+              "operator": { "type": "string", "enum": ["equals", "not_equals", "contains", "exists", "not_exists"] },
+              "value": {}
+            }
+          }
+        }
+      }
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this rule is currently active"
+    },
+    "detection_method": {
+      "type": "string",
+      "enum": ["OCR", "COMPUTER_VISION", "MANUAL_REVIEW", "HYBRID"],
+      "description": "How the field/condition is detected"
+    },
+    "evidence_type": {
+      "type": "string",
+      "enum": ["bounding_box", "image_region", "text_highlight", "full_image", "none"],
+      "description": "Type of visual evidence to attach"
+    },
+    "confidence_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.7,
+      "description": "Minimum OCR confidence required for automated decision"
+    },
+    "display_order": {
+      "type": "integer",
+      "description": "Order in which to display this rule in reports"
+    }
+  }
+}

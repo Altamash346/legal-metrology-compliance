@@ -1,0 +1,102 @@
+[
+  {
+    "rule_id": "R001", "title": "Manufacturer Name Required", "category": "General", "field_name": "manufacturer_name",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "CRITICAL", "legal_reference": "LM Rule 6(1)(a)",
+    "violation_message": "Manufacturer name must be present on the package.", "is_active": true
+  },
+  {
+    "rule_id": "R002", "title": "Manufacturer Address Required", "category": "General", "field_name": "manufacturer_address",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "CRITICAL", "legal_reference": "LM Rule 6(1)(a)",
+    "violation_message": "Manufacturer address must be present.", "is_active": true
+  },
+  {
+    "rule_id": "R003", "title": "Net Quantity Required", "category": "General", "field_name": "net_quantity",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "CRITICAL", "legal_reference": "LM Rule 6(1)(c)",
+    "violation_message": "Net quantity is missing.", "is_active": true
+  },
+  {
+    "rule_id": "R004", "title": "MRP Required", "category": "Pricing", "field_name": "mrp",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "CRITICAL", "legal_reference": "LM Rule 6(1)(e)",
+    "violation_message": "MRP is missing.", "is_active": true
+  },
+  {
+    "rule_id": "R005", "title": "MRP Format", "category": "Pricing", "field_name": "mrp",
+    "rule_type": "PRICE_FORMAT", "condition": {}, "severity": "HIGH", "legal_reference": "LM Rule 6(1)(e)",
+    "violation_message": "MRP must include 'inclusive of all taxes'.", "is_active": true
+  },
+  {
+    "rule_id": "R006", "title": "Manufacturing Date Required", "category": "Date", "field_name": "manufacturing_date",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "CRITICAL", "legal_reference": "LM Rule 6(1)(d)",
+    "violation_message": "Manufacturing date is missing.", "is_active": true
+  },
+  {
+    "rule_id": "R007", "title": "Date Format", "category": "Date", "field_name": "manufacturing_date",
+    "rule_type": "DATE_RELATION", "condition": {}, "severity": "MEDIUM", "legal_reference": "LM Rule 6(1)(d)",
+    "violation_message": "Invalid date format.", "is_active": true
+  },
+  {
+    "rule_id": "R008", "title": "Batch Number Required", "category": "General", "field_name": "batch_number",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "HIGH", "legal_reference": "LM Rules",
+    "violation_message": "Batch number must be declared.", "is_active": true
+  },
+  {
+    "rule_id": "R009", "title": "FSSAI Required", "category": "Food", "field_name": "fssai_number",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "CRITICAL", "legal_reference": "FSSAI Act",
+    "violation_message": "FSSAI License number is missing.", "applicability": {"product_category": "Food"}, "is_active": true
+  },
+  {
+    "rule_id": "R010", "title": "FSSAI Format", "category": "Food", "field_name": "fssai_number",
+    "rule_type": "REGEX", "condition": {"pattern": "^\\d{14}$"}, "severity": "HIGH", "legal_reference": "FSSAI Act",
+    "violation_message": "FSSAI must be 14 digits.", "applicability": {"product_category": "Food"}, "is_active": true
+  },
+  {
+    "rule_id": "R011", "title": "Consumer Care Number Required", "category": "General", "field_name": "consumer_care_number",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "HIGH", "legal_reference": "LM Rule 6",
+    "violation_message": "Consumer care contact details are missing.", "is_active": true
+  },
+  {
+    "rule_id": "R012", "title": "Country of Origin", "category": "Import", "field_name": "country_of_origin",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "CRITICAL", "legal_reference": "LM Rule 6(1)(a)",
+    "violation_message": "Country of origin is required for imported products.", "applicability": {"commodity_type": "Imported"}, "is_active": true
+  },
+  {
+    "rule_id": "R013", "title": "Packer Name Required", "category": "General", "field_name": "packer_name",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "HIGH", "legal_reference": "LM Rules",
+    "violation_message": "Packer name required if different from manufacturer.", "is_active": true
+  },
+  {
+    "rule_id": "R014", "title": "Expiry Date vs Mfg Date", "category": "Date", "field_name": "expiry_date",
+    "rule_type": "DATE_RELATION", "condition": {"must_be_after": "manufacturing_date"}, "severity": "CRITICAL", "legal_reference": "General",
+    "violation_message": "Expiry date must be after manufacturing date.", "is_active": true
+  },
+  {
+    "rule_id": "R015", "title": "Net Quantity Format", "category": "General", "field_name": "net_quantity",
+    "rule_type": "QUANTITY_FORMAT", "condition": {}, "severity": "HIGH", "legal_reference": "LM Rule 13",
+    "violation_message": "Net quantity must have standard units.", "is_active": true
+  },
+  {
+    "rule_id": "R016", "title": "Barcode Required", "category": "General", "field_name": "barcode_number",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "LOW", "legal_reference": "Best Practice",
+    "violation_message": "Barcode is missing.", "is_active": true
+  },
+  {
+    "rule_id": "R017", "title": "Veg/Non-Veg Symbol", "category": "Food", "field_name": "veg_nonveg_symbol",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "CRITICAL", "legal_reference": "FSSAI Rules",
+    "violation_message": "Vegetarian or Non-Vegetarian symbol is required.", "applicability": {"product_category": "Food"}, "is_active": true
+  },
+  {
+    "rule_id": "R018", "title": "Common/Generic Name", "category": "General", "field_name": "generic_name",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "HIGH", "legal_reference": "LM Rule 6(1)(b)",
+    "violation_message": "Generic or common name must be mentioned.", "is_active": true
+  },
+  {
+    "rule_id": "R019", "title": "Ingredients List", "category": "Food", "field_name": "ingredients",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "HIGH", "legal_reference": "FSSAI",
+    "violation_message": "List of ingredients is required.", "applicability": {"product_category": "Food"}, "is_active": true
+  },
+  {
+    "rule_id": "R020", "title": "Allergen Declaration", "category": "Food", "field_name": "allergen_info",
+    "rule_type": "REQUIRED", "condition": {}, "severity": "HIGH", "legal_reference": "FSSAI",
+    "violation_message": "Allergen information is missing.", "applicability": {"product_category": "Food"}, "is_active": true
+  }
+]
