@@ -26,10 +26,12 @@ class ApiClient {
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      throw new Error(error.detail || error.message || 'API request failed');
+      const message = typeof error.detail === 'string' 
+        ? error.detail 
+        : (error.message || `API error: ${response.status}`);
+      throw new Error(message);
     }
 
-    // Handle 204 No Content
     if (response.status === 204) {
       return {} as T;
     }
@@ -58,21 +60,21 @@ class ApiClient {
 
   // Inspections
   async createInspection(data: any) {
-    return this.request<any>('/inspections', {
+    return this.request<any>('/inspections/', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
-  async listInspections() {
-    return this.request<any[]>('/inspections', { method: 'GET' });
+  async listInspections(page: number = 1, size: number = 20) {
+    return this.request<any>(`/inspections/?page=${page}&size=${size}`, { method: 'GET' });
   }
 
   async getInspection(id: string) {
     return this.request<any>(`/inspections/${id}`, { method: 'GET' });
   }
 
-  // Note: FormData is passed, so we do not stringify it or set content-type
+  // Image upload — runs OCR + field extraction + rule validation automatically
   async uploadImages(id: string, formData: FormData) {
     const token = getToken();
     const headers = new Headers();
@@ -84,15 +86,61 @@ class ApiClient {
       headers,
       body: formData,
     });
-    if (!response.ok) throw new Error('Failed to upload images');
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to upload images');
+    }
     return response.json();
   }
 
-  async processInspection(id: string) {
-    return this.request<any>(`/inspections/${id}/process`, { method: 'POST' });
+  // Re-validate: run rule engine again
+  async validateInspection(id: string) {
+    return this.request<any>(`/inspections/${id}/validate`, { method: 'POST' });
   }
 
-  // Additional methods...
+  // Get extracted fields from OCR
+  async getExtractedFields(id: string) {
+    return this.request<any[]>(`/inspections/${id}/fields`, { method: 'GET' });
+  }
+
+  // Get OCR raw results
+  async getOcrResults(id: string) {
+    return this.request<any[]>(`/inspections/${id}/ocr`, { method: 'GET' });
+  }
+
+  // Get compliance report (score, checks, pass/fail)
+  async getComplianceReport(id: string) {
+    return this.request<any>(`/inspections/${id}/compliance`, { method: 'GET' });
+  }
+
+  // Rules
+  async listRules() {
+    return this.request<any[]>('/rules/', { method: 'GET' });
+  }
+
+  async createRule(data: any) {
+    return this.request<any>('/rules/', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async importRules(rules: any[]) {
+    return this.request<any>('/rules/import', {
+      method: 'POST',
+      body: JSON.stringify({ rules }),
+    });
+  }
+
+  async exportRules() {
+    return this.request<any>('/rules/export/all', { method: 'GET' });
+  }
+
+  async deleteRule(id: string) {
+    return this.request<any>(`/rules/${id}`, { method: 'DELETE' });
+  }
+
+  // Dashboard
   async getDashboardStats() {
     return this.request<any>('/dashboard/stats', { method: 'GET' });
   }
